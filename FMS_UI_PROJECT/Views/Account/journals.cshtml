@@ -1,0 +1,500 @@
+﻿
+@{
+    ViewBag.Title = "Journals";
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<style>
+    .nav-link.active {
+        background-color: #007bff !important; /* Background color for active link */
+        color: white !important; /* Text color for better contrast */
+        border: 2px solid black !important; /* Border color for active link */
+        border-radius: 5px !important; /* Optional: rounded corners */
+        padding: 10px 15px !important; /* Optional: padding for better spacing */
+    }
+
+    select.form-control, .select2-container--default select.select2-selection--single, .select2-container--default .select2-selection--single select.select2-search__field, select.typeahead, select.tt-query, select.tt-hint {
+        color: darkslategray !important;
+    }
+</style>
+<div class="row">
+    <div class="col-lg-12 mb-3">
+        <h4>@ViewBag.Title</h4>
+    </div>
+    <div class="col-lg-12">
+        <div class="card">
+            <div class="card-body d-flex flex-column justify-content-between">
+                <div class="d-flex justify-content-between align-items-center mb-2">
+                    <div class="col-lg-12">
+                        <nav>
+                            <div class="nav nav-tabs" id="nav-tab" role="tablist">
+                                <button class="nav-link active" id="nav_list" data-bs-toggle="tab" data-bs-target="#nav_div_list" type="button" role="tab" aria-controls="nav-home" aria-selected="true" onclick="show_list()">Details</button>
+                                <button class="nav-link" id="nav_new" data-bs-toggle="tab" data-bs-target="#nav_div_new" type="button" role="tab" aria-controls="nav-profile" aria-selected="false" onclick="show_new()">New Journal</button>
+                            </div>
+                        </nav>
+                        <div class="tab-content mt-3" id="nav-tabContent">
+                            <div class="tab-pane fade show active" id="nav_div_list" role="tabpanel" aria-labelledby="nav-home-tab">
+                                <div class="col-lg-12 table-responsive">
+                                    <table class="table table-bordered table-condensed table-striped" id="list_tbl">
+                                        <thead class="table-info">
+                                            <tr>
+                                                <th style="text-align:center; color:black;">#</th>
+                                                <th style="text-align:center; color:black;">Account No</th>
+                                                <th style="text-align:center; color:black;">Account Name</th>
+                                                <th style="text-align:center; color:black;">Date</th>
+                                                <th style="text-align:center; color:black;">Description</th>
+                                                <th style="text-align:center; color:black;">Type</th>
+                                                <th style="text-align:center; color:black;">Amount</th>
+                                                <th style="text-align:center; color:black;">Balance</th>
+                                                <th style="text-align:center; color:black;">Action</th>
+                                            </tr>
+                                        </thead>
+                                        <tbody id="list_tbl_bdy"></tbody>
+                                    </table>
+                                </div>
+                            </div>
+                            <div class="tab-pane fade" id="nav_div_new" role="tabpanel" aria-labelledby="nav-profile-tab">
+                                <div class="col-lg-12">
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="acc_no">Acount NO</label>
+                                                <select class="form-control form-control-sm border-dark" id="acc_no">
+                                                    <option value="0">Select Account NO</option>
+                                                    <option value="1000251055">1000251055</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="acc_type">Transaction Type</label>
+                                                <select class="form-control form-control-sm border-dark" id="acc_type">
+                                                    <option value="0">Select Type</option>
+                                                    <option value="101">Deposit</option>
+                                                    <option value="102">Expense</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <label for="acc_des">Description</label>
+                                                <select class="form-control form-control-sm border-dark" id="acc_des"></select>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row mb-3">
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control date" placeholder="Select Date" id="doc_date">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-facebook" type="button">
+                                                            <i class="fi fi-rr-daily-calendar"></i>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                        <div class="col-lg-4">
+                                            <div class="form-group">
+                                                <div class="input-group">
+                                                    <input type="text" class="form-control" placeholder="Enter Amount" id="amount">
+                                                    <div class="input-group-append">
+                                                        <button class="btn btn-sm btn-facebook" type="button">
+                                                            ৳
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="row">
+                                        <div align="right" class="col-lg-6">
+                                            <button id="cancel_btn" type="button" class="btn btn-sm btn-inverse-danger btn-fw" onclick="show_list()">
+                                                <i class="fi fi-rr-cross-circle"></i>&nbsp;Cancel
+                                            </button>
+                                        </div>
+                                        <div align="left" class="col-lg-6">
+                                            <button id="submit_btn" type="button" class="btn btn-sm btn-inverse-primary btn-fw" onclick="JOURNAL_POSTING()">
+                                                <i class="fi fi-rr-check-circle"></i>&nbsp;Submit
+                                            </button>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<div class="modal fade" tabindex="-1" role="dialog" id="update_modal">
+    <div class="modal-dialog modal-xl" role="document">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h5 class="modal-title">Modal title</h5>
+                <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+                    <span aria-hidden="true">&times;</span>
+                </button>
+            </div>
+            <div class="modal-body">
+                <div class="col-lg-12">
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="acc_no">Acount NO</label>
+                                <select class="form-control form-control-sm border-dark" id="acc_no_up">
+                                    <option value="0">Select Account NO</option>
+                                    <option value="1000251055">1000251055</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="acc_type">Transaction Type</label>
+                                <select class="form-control form-control-sm border-dark" id="acc_type_up">
+                                    <option value="0">Select Type</option>
+                                    <option value="101">Deposit</option>
+                                    <option value="102">Expense</option>
+                                </select>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <label for="acc_des">Description</label>
+                                <select class="form-control form-control-sm border-dark" id="acc_des_up"></select>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="row mb-3">
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control date" placeholder="Select Date" id="doc_date_up">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-facebook" type="button">
+                                            <i class="fi fi-rr-daily-calendar"></i>
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="col-lg-4">
+                            <div class="form-group">
+                                <div class="input-group">
+                                    <input type="text" class="form-control" placeholder="Enter Amount" id="amount_up">
+                                    <div class="input-group-append">
+                                        <button class="btn btn-sm btn-facebook" type="button">
+                                            ৳
+                                        </button>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-inverse-danger" data-dismiss="modal" onclick="close_modalclose_modal()">Close</button>
+                <button id="update_btn" type="button" class="btn btn-inverse-primary" onclick="UPDATE_JOURNAL()">Save changes</button>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script>
+    $(document).ready(function () {
+        GET_ALL_JOURNALS();
+        //$('#doc_date').datepicker({
+        //    format: 'mm/dd/yyyy',  
+        //    autoclose: true,
+        //    todayHighlight: true
+        //});
+        $('.date').datepicker({
+            format: 'mm/dd/yyyy',
+            autoclose: true,
+            todayHighlight: true
+        });
+    });
+
+    function show_list() {
+        $("#nav_div_list").removeClass("show active");
+        $("#nav_div_new").removeClass("show active");
+        $("#nav_div_list").addClass("show active");
+
+        $("#nav_list").removeClass("active");
+        $("#nav_new").removeClass("active");
+        $("#nav_list").addClass("active");
+    }
+
+    function show_new() {
+        $("#nav_div_list").removeClass("show active");
+        $("#nav_div_new").removeClass("show active");
+
+        $("#nav_div_new").addClass("show active");
+
+        $("#nav_list").removeClass("active");
+        $("#nav_new").removeClass("active");
+
+        $("#nav_new").addClass("active");
+    }
+
+    async function GET_ALL_JOURNALS() {
+        try {
+            const response = await $.ajax({
+                type: "POST",
+                url: "/Account/GET_ALL_JOURNALS",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json"
+            });
+
+            console.log("GET_ALL_JOURNALS:", response);
+
+            if (response.has_data) {
+                let result = response.list.map((chart_acc, index) => {
+                    return `
+                    <tr id="tr_${chart_acc.JOURNAL_ID}" data-journalid="${chart_acc.JOURNAL_ID}" data-coaid="${chart_acc.COA_ID}" data-accno="${chart_acc.ACCOUNT_NO}" data-date="${chart_acc.DOC_DATE}" data-acctype="${chart_acc.ACC_TYPE}" data-amount="${chart_acc.AMOUNT}">
+                        <td style="text-align:center;">${index + 1}</td>
+                        <td style="text-align:center;">${chart_acc.ACCOUNT_NO}</td>
+                        <td style="text-align:center;">${chart_acc.ACCOUNT_NAME}</td>
+                        <td style="text-align:center;">${chart_acc.DOC_DATE}</td>
+                        <td style="text-align:center;">${chart_acc.ACCOUNT_DESCRIPTION}</td>
+                        <td style="text-align:center;">${chart_acc.TYPE}</td>
+                        <td style="text-align:center;">${chart_acc.AMOUNT}</td>
+                        <td style="text-align:center;">${chart_acc.BALANCE}</td>
+
+                        <td style="text-align:center;">
+                            <button type="button" class="btn btn-inverse-info btn-icon mx-2" title="Click to Edit" onclick="show_modal('${chart_acc.JOURNAL_ID}')">
+                                <i class="fi fi-rr-file-edit"></i>
+                            </button>
+                            <button type="button" class="btn btn-inverse-danger btn-icon mx-2" title="Click to Delete" onclick="DELETE_JOURNAL('${chart_acc.JOURNAL_ID}')">
+                                <i class="fi fi-rr-trash"></i>
+                            </button>
+
+                        </td>
+                    </tr>`;
+                }).join('');
+
+                load_coa_dropdown(response.coa_list);
+
+                $('#list_tbl').DataTable().destroy();
+                $("#list_tbl_bdy").empty().append(result);
+                $('#list_tbl').DataTable({
+                    lengthMenu: [[10, 100, 200, -1], [10, 100, 200, "All"]],
+                });
+            } else {
+                $('#list_tbl').DataTable().destroy();
+                $('#list_tbl').DataTable({
+                    lengthMenu: [[10, 100, 200, -1], [10, 100, 200, "All"]],
+                });
+
+            }
+            show_list();
+        } catch (error) {
+            console.error("Error fetching GET_ALL_JOURNALS:", error);
+            showMessage("An error occurred while fetching GET_ALL_JOURNALS.", "error");
+        }
+    }
+
+    function load_coa_dropdown(response) {
+        let result = `<option value="0">Select Description</option>`;
+        response.forEach(coa => {
+            result += `<option value="${coa.COA_ID}" title="${coa.COA_ID}">${coa.ACCOUNT_DESCRIPTION}</option>`;
+        });
+        $("#acc_des").empty().append(result);
+        $("#acc_des_up").empty().append(result);
+    }
+    
+    async function JOURNAL_POSTING() {
+        let acc_no = $("#acc_no").val();
+        let acc_type = $("#acc_type").val();
+        let acc_des = $("#acc_des").val();
+        let doc_date = $("#doc_date").val();
+        let amount = $("#amount").val();
+
+        if (acc_no == 0) {
+            showMessage("please select account no", "error");
+            return;
+        }
+
+        if (acc_type == 0) {
+            showMessage("please select transaction type", "error");
+            return;
+        }
+
+        if (acc_des == 0) {
+            showMessage("please select transaction description", "error");
+            return;
+        }
+
+        if (doc_date == "" || doc_date == null) {
+            showMessage("please select transaction date", "error");
+            return;
+        }
+
+        if (amount == "" || amount == null) {
+            showMessage("please select transaction amount", "error");
+            return;
+        }
+
+        try {
+            const response = await $.ajax({
+                type: "POST",
+                url: "/Account/JOURNAL_POSTING",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    ACC_NO: acc_no,
+                    ACC_TYPE: acc_type,
+                    COA_ID: acc_des,
+                    DATE: doc_date,
+                    AMOUNT: amount
+                })
+            });
+
+            console.log("JOURNAL_POSTING:", response);
+
+            if (response.has_data) {
+                showMessage(response.message, "success");
+                GET_ALL_JOURNALS();
+            } else {
+                showMessage(response.message, "error");
+            }
+        } catch (error) {
+            console.error("Error fetching JOURNAL_POSTING:", error);
+            showMessage("An error occurred while fetching JOURNAL_POSTING.", "error");
+        }
+    }
+
+    function show_modal(j_id) {
+        let tr_id = $("#tr_" + j_id);
+        //let acc_id = tr_id.attr('data-accid');
+        let acc_des = tr_id.attr('data-coaid');
+        let acc_no = tr_id.attr('data-accno');
+        let acc_type = tr_id.attr('data-acctype');
+        let date = tr_id.attr('data-date');
+        let amt = tr_id.attr('data-amount');
+
+        $("#acc_des_up").val(acc_des);
+        $("#acc_type_up").val(acc_type).trigger('change');
+        $("#acc_no_up").val(acc_no).trigger('change');
+
+        $("#doc_date_up").val(date);
+        $("#amount_up").val(amt);
+
+        $("#update_btn").attr('data-journalid', j_id);
+        $("#update_modal").modal('toggle');
+
+    }
+
+    function close_modal() {
+        $("#update_modal").modal('toggle');
+    }
+
+    async function UPDATE_JOURNAL() {
+        let acc_no = $("#acc_no_up").val();
+        let acc_type = $("#acc_type_up").val();
+        let j_id = $("#acc_des_up").val();
+        let date = $("#doc_date_up").val();
+        let amount = $("#amount_up").val();
+        let journal_id = $("#update_btn").attr('data-journalid') || 0;
+
+        if (acc_no == 0) {
+            showMessage("please select account no", "error");
+            return;
+        }
+
+        if (acc_type == 0) {
+            showMessage("please select transaction type", "error");
+            return;
+        }
+
+        if (j_id == 0) {
+            showMessage("lease select description", "error");
+            return;
+        }
+
+        if (date == "" || date == null) {
+            showMessage("please select transaction date", "error");
+            return;
+        }
+
+        if (amount == "" || amount == null) {
+            showMessage("please select transaction date", "error");
+            return;
+        }
+
+        try {
+            const response = await $.ajax({
+                type: "POST",
+                url: "/Account/UPDATE_JOURNAL",
+                contentType: "application/json; charset=utf-8",
+                dataType: "json",
+                data: JSON.stringify({
+                    JOURNAL_ID: journal_id,
+                    ACC_TYPE: acc_type,
+                    COA_ID: j_id,
+                    DATE: date,
+                    AMOUNT: amount
+                })
+            });
+
+            console.log("UPDATE_JOURNAL:", response);
+
+            if (response.has_data) {
+                showMessage(response.message, "success");
+                GET_ALL_JOURNALS();
+            } else {
+                showMessage(response.message, "error");
+            }
+            $("#update_modal").modal('toggle');
+        } catch (error) {
+            console.error("Error fetching UPDATE_JOURNAL:", error);
+            showMessage("An error occurred while fetching UPDATE_JOURNAL.", "error");
+        }
+    }
+
+    async function DELETE_JOURNAL(j_id) {
+        try {
+            const confirmResult = await Swal.fire({
+                //Articel: 8614643 Total 10 pairs will be produced
+                title: `Are You Sure?`,
+                showCancelButton: true,
+                cancelButtonColor: '#d33',
+                confirmButtonColor: '#3085d6',
+                confirmButtonText: 'Yes',
+            });
+            if (confirmResult.isConfirmed) {
+                const response = await $.ajax({
+                    type: "POST",
+                    url: "/Account/DELETE_JOURNAL",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        JOURNAL_ID: j_id
+                    })
+                });
+
+                console.log("DELETE_JOURNAL:", response);
+
+                if (response.has_data) {
+                    showMessage(response.message, "success");
+                    GET_ALL_JOURNALS();
+                } else {
+                    showMessage(response.message, "error");
+                }
+
+            }
+            else if (confirmResult.isDenied) {
+                Swal.fire('Changes are not saved', '', 'info');
+            }
+        } catch (error) {
+            console.error("Error fetching DELETE_JOURNAL:", error);
+            showMessage("An error occurred while fetching DELETE_JOURNAL.", "error");
+        }
+    }
+   
+</script>

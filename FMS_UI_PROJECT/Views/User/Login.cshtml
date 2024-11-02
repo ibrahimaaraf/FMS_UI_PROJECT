@@ -1,0 +1,370 @@
+﻿
+@{
+    Layout = null;
+}
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta name="viewport" content="width=device-width" />
+    <title>Login</title>
+
+    <style>
+        @@import url("https://fonts.googleapis.com/css?family=Kalam");
+
+        /* Global */
+
+        *:focus {
+            outline: none;
+        }
+
+        * {
+            box-sizing: border-box;
+        }
+
+        body {
+            font-family: 'Kalam';
+            height: 100vh;
+            background: linear-gradient(45deg, #89b5a2 0%, #b4889b 100%)
+        }
+
+        a {
+            color: #92badd;
+            display: inline-block;
+            text-decoration: none;
+            font-weight: 400;
+        }
+
+        h2 {
+            text-align: center;
+            font-size: 16px;
+            font-weight: 600;
+            text-transform: uppercase;
+            display: inline-block;
+            margin: 40px 8px 10px 8px;
+            color: black;
+        }
+
+
+
+        /* STRUCTURE */
+
+        .container {
+            display: flex;
+            align-items: center;
+            flex-direction: column;
+            justify-content: center;
+            width: 100%;
+            min-height: 100%;
+            padding: 20px;
+        }
+
+        #formContent {
+            border-radius: 3px;
+            border: 3px solid skyblue;
+            background: #464647;
+            padding: 0;
+            width: 90%;
+            max-width: 350px;
+            position: relative;
+            box-shadow: 0 0 10px #464647;
+            text-align: center;
+        }
+
+        #formFooter {
+            background: transparent;
+            border-top: 1px solid #dce8f1;
+            padding: 25px;
+            text-align: center;
+            border-radius: 0 0 10px 10px;
+        }
+
+        h2.inactive {
+            color: black;
+            cursor: pointer;
+        }
+
+        h2.active {
+            color: black;
+            border-bottom: 2px solid #5fbae9;
+        }
+
+        /* FORM STYLING */
+
+        input[type=button], input[type=submit], input[type="reset"] {
+            background-color: antiquewhite;
+            border: none;
+            padding: 15px 80px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            text-transform: uppercase;
+            font-size: 13px;
+            box-shadow: 0 0 1px skyblue;
+            border-radius: 50px;
+            margin: 5px 20px 40px 20px;
+            transition: all 0.3s ease-in-out;
+        }
+
+            input[type=button]:hover, input[type=submit]:hover, input[type=reset]:hover {
+                box-shadow: 0 0 10px 0 black;
+                cursor: pointer;
+                color: black;
+            }
+
+            input[type=button]:active, input[type=submit]:active, input[type=reset]:active {
+                transform: scale(0.95);
+            }
+
+        input[type=text], input[type="password"] {
+            background-color: #defffc;
+            color: black;
+            padding: 15px 32px;
+            text-align: center;
+            text-decoration: none;
+            display: inline-block;
+            font-size: 16px;
+            margin: 5px;
+            width: 85%;
+            border: none;
+            box-shadow: 0 0 1px skyblue;
+            transition: all 0.5s ease-in-out;
+            border-radius: 20px;
+        }
+
+            input[type=text]:focus, input[type="password"]:focus {
+                box-shadow: 0 0 10px black;
+                color: black;
+            }
+
+
+        /* ANIMATIONS */
+
+        /* Fade-in-down Animation */
+
+        .fadeInDown {
+            animation-name: fadeInDown;
+            animation-duration: 1s;
+            animation-fill-mode: both;
+        }
+
+        @@keyframes fadeInDown {
+            0% {
+                opacity: 0;
+                transform: translate3d(0, -100%, 0);
+            }
+
+            50% {
+                opacity: .5;
+                transform: translate3d(0, 20%, 0);
+            }
+
+            100% {
+                opacity: 1;
+                transform: none;
+            }
+        }
+
+        /* Fade-in Animation */
+
+        @@keyframes fadeIn {
+            from {
+                opacity: 0;
+            }
+
+            to {
+                opacity: 1;
+            }
+        }
+
+        .fadeIn {
+            opacity: 0;
+            animation: fadeIn ease-in 1s;
+            animation-fill-mode: forwards;
+            animation-duration: 1s;
+        }
+
+            .fadeIn.first {
+                animation-delay: 0.4s;
+            }
+
+            .fadeIn.second {
+                animation-delay: 0.6s;
+            }
+
+            .fadeIn.third {
+                animation-delay: 0.8s;
+            }
+
+            .fadeIn.fourth {
+                animation-delay: 1s;
+            }
+
+        /* Fade-in Animation */
+
+        .underlineHover:after {
+            display: block;
+            left: 0;
+            bottom: -2px;
+            width: 0;
+            height: 2px;
+            background-color: blue;
+            content: "";
+            transition: width 0.2s;
+        }
+
+        .underlineHover:hover {
+            color: #fff;
+        }
+
+            .underlineHover:hover:after {
+                width: 100%;
+            }
+    </style>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+    <link href="../../assets/css/toastr.css" rel="stylesheet" />
+    <link href="../../assets/css/flat-icon-cdn/css/uicons-regular-rounded.css" rel="stylesheet" />
+    <script src="../../assets/js/toastr.js"></script>
+</head>
+<body>
+    <div class="container fadeInDown">
+        <div id="formContent">
+            <!-- Tabs Titles -->
+            <h2 id="sign_in" class="active" onclick="show_sign_in()"> Sign In </h2>
+            <h2 id="sign_up" class="inactive underlineHover" onclick="show_sign_up()">Sign Up</h2>
+            <!-- Login Form -->
+            <div id="login_div">
+                <input id="login_email" type="text" class="fadeIn second" placeholder="Email" autocomplete="off">
+                <input id="login_password" type="password" class="fadeIn third" placeholder="Password" autocomplete="off">
+                <input id="login_submit" type="submit" class="fadeIn fourth" value="Log In" onclick="Login()">
+            </div>
+            <div id="signup_div" style="display:none;">
+                <input id="signup_username" type="text" class="fadeIn second" placeholder="User Name" autocomplete="off">
+                <input id="signup_fullname" type="text" class="fadeIn second" placeholder="Full Name" autocomplete="off">
+                <input id="signup_userid" type="text" class="fadeIn second" placeholder="Employee Id" autocomplete="off">
+                <input id="signup_email" type="text" class="fadeIn second" placeholder="Email" autocomplete="off">
+                <input id="signup_phone" type="text" class="fadeIn second" placeholder="Phone" autocomplete="off">
+                <input id="signup_password" type="password" class="fadeIn third" placeholder="Password" autocomplete="off">
+                <input id="signup_submit" type="submit" class="fadeIn fourth" onclick="CreateUser()" value="Sign Up" autocomplete="off">
+            </div>
+            <!-- Forgot Password -->
+            <div id="formFooter">
+                <a class="underlineHover" href="#">Forgot Password?</a>
+            </div>
+        </div>
+    </div>
+    <script>
+        function show_sign_up() {
+            $("#sign_in").removeClass('active').addClass('inactive');
+            $("#sign_up").removeClass('inactive underlineHover').addClass('active underlineHover');
+            $("#login_div").hide();
+            $("#signup_div").show();
+        }
+        function show_sign_in() {
+            $("#sign_up").removeClass('active underlineHover').addClass('inactive');
+            $("#sign_in").removeClass('inactive').addClass('active underlineHover');
+            $("#login_div").show();
+            $("#signup_div").hide();
+        }
+
+        async function CreateUser() {
+            let user_name = $("#signup_username").val() || "";
+            let user_fullname = $("#signup_fullname").val() || "";
+            let user_email = $("#signup_email").val() || "";
+            let user_id = $("#signup_userid").val() || "";
+            let user_phone = $("#signup_phone").val() || "";
+            let user_pass = $("#signup_password").val() || "";
+            let user_status = 1;
+            try {
+                const response = await $.ajax({
+                    type: "POST",
+                    url: "/User/Registration",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        USER_NAME: user_name,
+                        FULL_NAME: user_fullname,
+                        EMAIL: user_email,
+                        USER_ID: user_id,
+                        PHONE: user_phone,
+                        PASSWORD: user_pass,
+                        STATUS: user_status
+                    })
+                });
+
+                console.log("CreateUser:", response);
+
+                if (response.has_data) {
+                    $("#login_email").val(user_email);
+                    $("#login_password").val(user_pass);
+                    Login();
+                } else {
+                    showMessage(response.message, "error");
+                }
+            } catch (error) {
+                console.error("Error fetching CreateUser:", error);
+                showMessage("An error occurred while fetching CreateUser.", "error");
+            }
+        }
+
+        async function Login() {
+            let user_email = $("#login_email").val() || "";
+            let user_pass = $("#login_password").val() || "";
+            try {
+                const response = await $.ajax({
+                    type: "POST",
+                    url: "/User/signin",
+                    contentType: "application/json; charset=utf-8",
+                    dataType: "json",
+                    data: JSON.stringify({
+                        EMAIL: user_email,
+                        PASSWORD: user_pass
+                    })
+                });
+
+                console.log("Login:", response);
+
+                if (response.has_data) {
+                    showMessage(response.message,"success")
+                    let url = "../../Account/ChartofAccounts";
+                    //let url = "../../Home/Index";
+                    window.location.href = url;
+                } else {
+                    showMessage(response.message, "error");
+                }
+            }
+            catch (error) {
+                console.error("Error fetching Login:", error);
+                console.error("Full error details:", error.responseText || error.statusText || error.message);
+
+                showMessage("An error occurred while fetching Login.", "error");
+            }
+        }
+
+        function showMessage(message, type) {
+            if (!toastr.options.preventDuplicates || !toastr.getActive().length) {
+                toastr.clear();
+                const capitalizedMessage = capitalizeEveryWord(message);
+                toastr[type.toLowerCase()](capitalizedMessage, type.toUpperCase(), {
+                    "positionClass": "toast-top-right",
+                    "showDuration": "300",
+                    "hideDuration": "1000",
+                    "timeOut": "5000",
+                    "closeButton": true,
+                    "preventDuplicates": true // Prevent duplicate toasts
+                });
+            }
+        }
+
+        function capitalizeEveryWord(str) {
+            str = String(str); // Convert to string
+            return str.replace(/\b\w+\b/g, function (word) {
+                return word.charAt(0).toUpperCase() + word.slice(1).toLowerCase();
+            });
+        }
+
+
+    </script>
+</body>
+</html>
